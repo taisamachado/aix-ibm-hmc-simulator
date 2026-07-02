@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LPAR Console - AIX Installation Simulator</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/console.css">
+</head>
+<body class="console-page">
+    <div class="console-container">
+        <div class="console-header">
+            <div class="console-title">
+                <span class="console-icon">🖥️</span>
+                <div>
+                    <h1 id="lparName">LPAR Console</h1>
+                    <p id="lparInfo">Loading...</p>
+                </div>
+            </div>
+            <div class="console-actions">
+                <button class="btn-console" onclick="restartInstallation()">🔄 Restart</button>
+                <button class="btn-console" onclick="showHelp()">❓ Help</button>
+                <button class="btn-console btn-close" onclick="closeConsole()">✖ Close</button>
+            </div>
+        </div>
+
+        <div class="console-main">
+            <div class="console-screen" id="consoleScreen">
+                <div class="console-output" id="consoleOutput"></div>
+                <div class="console-input-line" id="inputLine" style="display: none;">
+                    <span class="console-prompt" id="prompt">>>> </span>
+                    <input type="text" id="consoleInput" class="console-input" autocomplete="off" />
+                </div>
+            </div>
+
+            <div class="console-sidebar">
+                <div class="progress-panel">
+                    <h3>Installation Progress</h3>
+                    <div class="progress-steps" id="progressSteps">
+                        <div class="step pending" data-step="1">
+                            <span class="step-number">1</span>
+                            <span class="step-name">Boot & SMS</span>
+                        </div>
+                        <div class="step pending" data-step="2">
+                            <span class="step-number">2</span>
+                            <span class="step-name">Select Media</span>
+                        </div>
+                        <div class="step pending" data-step="3">
+                            <span class="step-number">3</span>
+                            <span class="step-name">Installation Type</span>
+                        </div>
+                        <div class="step pending" data-step="4">
+                            <span class="step-number">4</span>
+                            <span class="step-name">Disk Selection</span>
+                        </div>
+                        <div class="step pending" data-step="5">
+                            <span class="step-number">5</span>
+                            <span class="step-name">Installing AIX</span>
+                        </div>
+                        <div class="step pending" data-step="6">
+                            <span class="step-number">6</span>
+                            <span class="step-name">Configuration</span>
+                        </div>
+                        <div class="step pending" data-step="7">
+                            <span class="step-number">7</span>
+                            <span class="step-name">Complete</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hints-panel">
+                    <h3>💡 Current Hint</h3>
+                    <p id="currentHint">Starting installation...</p>
+                </div>
+
+                <div class="commands-panel">
+                    <h3>📝 Quick Reference</h3>
+                    <div id="quickCommands">
+                        <p><strong>SMS Menu:</strong> Press 1-5</p>
+                        <p><strong>Installation:</strong> Follow prompts</p>
+                        <p><strong>Help:</strong> Type 'help'</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/console.js"></script>
+</body>
+</html>

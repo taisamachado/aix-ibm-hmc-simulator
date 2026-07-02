@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HMC Dashboard - Hardware Management Console</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="dashboard-page">
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">
+                <svg width="40" height="16" viewBox="0 0 60 24" fill="none">
+                    <rect width="60" height="24" fill="#0F62FE"/>
+                    <text x="30" y="17" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">IBM</text>
+                </svg>
+                <span>Hardware Management Console</span>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                <li><a href="systems.html">Systems</a></li>
+                <li><a href="lpars.html">LPARs</a></li>
+            </ul>
+            <div class="navbar-user">
+                <span class="user-info" id="userInfo">Loading...</span>
+                <button class="btn-logout" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Dashboard</h1>
+            <p>Overview of your Power Systems infrastructure</p>
+        </div>
+
+        <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+                <h3>Total Systems</h3>
+                <div class="stat-value" id="totalSystems">-</div>
+                <div class="stat-detail">Power Systems managed</div>
+            </div>
+            <div class="stat-card">
+                <h3>Total LPARs</h3>
+                <div class="stat-value" id="totalLpars">-</div>
+                <div class="stat-detail">
+                    <span id="runningLpars">-</span> running, 
+                    <span id="stoppedLpars">-</span> stopped
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>CPU Utilization</h3>
+                <div class="stat-value" id="cpuUtilization">-</div>
+                <div class="stat-detail">
+                    <span id="usedCpu">-</span> of <span id="totalCpu">-</span> cores used
+                </div>
+                <div class="stat-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="cpuProgress" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="stat-card">
+                <h3>Memory Utilization</h3>
+                <div class="stat-value" id="memoryUtilization">-</div>
+                <div class="stat-detail">
+                    <span id="usedMemory">-</span> of <span id="totalMemory">-</span> GB used
+                </div>
+                <div class="stat-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="memoryProgress" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-grid">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Managed Systems</h2>
+                    <a href="systems.html" class="btn btn-sm btn-secondary">View All</a>
+                </div>
+                <div class="card-body">
+                    <div class="table-container">
+                        <table id="systemsTable">
+                            <thead>
+                                <tr>
+                                    <th>System Name</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>LPARs</th>
+                                    <th>CPU Usage</th>
+                                    <th>Memory Usage</th>
+                                </tr>
+                            </thead>
+                            <tbody id="systemsTableBody">
+                                <tr>
+                                    <td colspan="6" class="loading">Loading systems...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Recent Events</h2>
+                </div>
+                <div class="card-body" style="padding: 0;">
+                    <div class="events-list" id="eventsList">
+                        <div class="loading">Loading events...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 24px;">
+            <div class="card-header">
+                <h2>Active LPARs</h2>
+                <a href="lpars.html" class="btn btn-sm btn-secondary">View All</a>
+            </div>
+            <div class="card-body">
+                <div class="table-container">
+                    <table id="lparsTable">
+                        <thead>
+                            <tr>
+                                <th>LPAR Name</th>
+                                <th>System</th>
+                                <th>OS</th>
+                                <th>Status</th>
+                                <th>CPU</th>
+                                <th>Memory (MB)</th>
+                                <th>IP Address</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lparsTableBody">
+                            <tr>
+                                <td colspan="8" class="loading">Loading LPARs...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/dashboard.js"></script>
+</body>
+</html>

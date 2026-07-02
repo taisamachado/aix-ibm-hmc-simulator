@@ -1,0 +1,82 @@
+[
+  {
+    "id": "evt_001",
+    "timestamp": "2026-07-02T08:15:23Z",
+    "severity": "INFO",
+    "source": "sys_9117_mma_001",
+    "message": "LPAR AIX-PROD-DB01 activated successfully",
+    "details": "Profile: default, CPU: 4, Memory: 32GB"
+  },
+  {
+    "id": "evt_002",
+    "timestamp": "2026-07-02T07:42:10Z",
+    "severity": "WARNING",
+    "source": "sys_9009_42a_003",
+    "message": "High CPU utilization detected",
+    "details": "System CPU usage at 85% for 15 minutes"
+  },
+  {
+    "id": "evt_003",
+    "timestamp": "2026-07-02T06:30:45Z",
+    "severity": "INFO",
+    "source": "sys_9080_mhe_002",
+    "message": "LPAR AIX-QA-APP01 shutdown completed",
+    "details": "Graceful shutdown initiated by user admin"
+  },
+  {
+    "id": "evt_004",
+    "timestamp": "2026-07-02T05:18:33Z",
+    "severity": "INFO",
+    "source": "sys_9117_mma_001",
+    "message": "Firmware update available",
+    "details": "New firmware version VH950_110 available for download"
+  },
+  {
+    "id": "evt_005",
+    "timestamp": "2026-07-02T04:05:12Z",
+    "severity": "ERROR",
+    "source": "sys_9080_mhe_002",
+    "message": "LPAR activation failed",
+    "details": "Insufficient memory available for LPAR AIX-TEST-APP02"
+  },
+  {
+    "id": "evt_006",
+    "timestamp": "2026-07-02T03:22:55Z",
+    "severity": "INFO",
+    "source": "sys_9009_42a_003",
+    "message": "Live Partition Mobility completed",
+    "details": "LPAR AIX-DEV-SAP01 migrated successfully"
+  },
+  {
+    "id": "evt_007",
+    "timestamp": "2026-07-02T02:10:08Z",
+    "severity": "WARNING",
+    "source": "sys_9117_mma_001",
+    "message": "Memory threshold exceeded",
+    "details": "System memory usage at 92%"
+  },
+  {
+    "id": "evt_008",
+    "timestamp": "2026-07-02T01:45:30Z",
+    "severity": "INFO",
+    "source": "HMC",
+    "message": "User login successful",
+    "details": "User: hscroot, IP: 10.10.0.50"
+  },
+  {
+    "id": "evt_009",
+    "timestamp": "2026-07-02T00:30:15Z",
+    "severity": "INFO",
+    "source": "sys_9080_mhe_002",
+    "message": "Scheduled backup completed",
+    "details": "System profile backup completed successfully"
+  },
+  {
+    "id": "evt_010",
+    "timestamp": "2026-07-01T23:15:42Z",
+    "severity": "WARNING",
+    "source": "sys_9009_42a_003",
+    "message": "Network adapter error detected",
+    "details": "Virtual Ethernet adapter ent0 on VIOS-05 reporting errors"
+  }
+]

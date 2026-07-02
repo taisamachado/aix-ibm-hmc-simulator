@@ -1,0 +1,62 @@
+[
+  {
+    "id": "sys_9117_mma_001",
+    "name": "Power9-Server-01",
+    "type": "9117-MMA",
+    "serial": "10A1B2C",
+    "status": "Operating",
+    "firmware": "VH950_099",
+    "cpu": {
+      "total": 32,
+      "used": 18,
+      "available": 14
+    },
+    "memory": {
+      "total": 512000,
+      "used": 286000,
+      "available": 226000
+    },
+    "lpars_count": 8,
+    "location": "DataCenter-A, Rack 12"
+  },
+  {
+    "id": "sys_9080_mhe_002",
+    "name": "Power8-Server-02",
+    "type": "9080-MHE",
+    "serial": "10D3E4F",
+    "status": "Operating",
+    "firmware": "VH920_075",
+    "cpu": {
+      "total": 24,
+      "used": 12,
+      "available": 12
+    },
+    "memory": {
+      "total": 256000,
+      "used": 128000,
+      "available": 128000
+    },
+    "lpars_count": 5,
+    "location": "DataCenter-A, Rack 15"
+  },
+  {
+    "id": "sys_9009_42a_003",
+    "name": "Power9-Server-03",
+    "type": "9009-42A",
+    "serial": "10G5H6J",
+    "status": "Operating",
+    "firmware": "VH950_105",
+    "cpu": {
+      "total": 48,
+      "used": 32,
+      "available": 16
+    },
+    "memory": {
+      "total": 1024000,
+      "used": 640000,
+      "available": 384000
+    },
+    "lpars_count": 12,
+    "location": "DataCenter-B, Rack 03"
+  }
+]

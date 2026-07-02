@@ -1,0 +1,420 @@
+[
+  {
+    "id": "lpar_001",
+    "name": "AIX-PROD-DB01",
+    "system_id": "sys_9117_mma_001",
+    "status": "Running",
+    "os": "AIX 7.2",
+    "profile": "default",
+    "cpu": {
+      "desired": 4,
+      "min": 2,
+      "max": 8,
+      "current": 4
+    },
+    "memory": {
+      "desired": 32768,
+      "min": 16384,
+      "max": 65536,
+      "current": 32768
+    },
+    "ip_address": "10.10.1.101",
+    "uptime": "45 days, 12:34:56"
+  },
+  {
+    "id": "lpar_002",
+    "name": "AIX-PROD-APP01",
+    "system_id": "sys_9117_mma_001",
+    "status": "Running",
+    "os": "AIX 7.3",
+    "profile": "default",
+    "cpu": {
+      "desired": 2,
+      "min": 1,
+      "max": 4,
+      "current": 2
+    },
+    "memory": {
+      "desired": 16384,
+      "min": 8192,
+      "max": 32768,
+      "current": 16384
+    },
+    "ip_address": "10.10.1.102",
+    "uptime": "32 days, 08:15:22"
+  },
+  {
+    "id": "lpar_003",
+    "name": "AIX-DEV-WEB01",
+    "system_id": "sys_9117_mma_001",
+    "status": "Running",
+    "os": "AIX 7.2",
+    "profile": "default",
+    "cpu": {
+      "desired": 2,
+      "min": 1,
+      "max": 4,
+      "current": 2
+    },
+    "memory": {
+      "desired": 8192,
+      "min": 4096,
+      "max": 16384,
+      "current": 8192
+    },
+    "ip_address": "10.10.1.103",
+    "uptime": "15 days, 03:45:10"
+  },
+  {
+    "id": "lpar_004",
+    "name": "LINUX-PROD-WEB01",
+    "system_id": "sys_9117_mma_001",
+    "status": "Running",
+    "os": "RHEL 8.5",
+    "profile": "default",
+    "cpu": {
+      "desired": 4,
+      "min": 2,
+      "max": 8,
+      "current": 4
+    },
+    "memory": {
+      "desired": 32768,
+      "min": 16384,
+      "max": 65536,
+      "current": 32768
+    },
+    "ip_address": "10.10.1.104",
+    "uptime": "89 days, 18:22:45"
+  },
+  {
+    "id": "lpar_005",
+    "name": "AIX-TEST-APP01",
+    "system_id": "sys_9117_mma_001",
+    "status": "Not Activated",
+    "os": "AIX 7.3",
+    "profile": "default",
+    "cpu": {
+      "desired": 1,
+      "min": 1,
+      "max": 2,
+      "current": 0
+    },
+    "memory": {
+      "desired": 8192,
+      "min": 4096,
+      "max": 16384,
+      "current": 0
+    },
+    "ip_address": "10.10.1.105",
+    "uptime": "N/A"
+  },
+  {
+    "id": "lpar_006",
+    "name": "VIOS-01",
+    "system_id": "sys_9117_mma_001",
+    "status": "Running",
+    "os": "VIOS 3.1.2",
+    "profile": "default",
+    "cpu": {
+      "desired": 2,
+      "min": 1,
+      "max": 4,
+      "current": 2
+    },
+    "memory": {
+      "desired": 16384,
+      "min": 8192,
+      "max": 32768,
+      "current": 16384
+    },
+    "ip_address": "10.10.1.110",
+    "uptime": "120 days, 05:12:33"
+  },
+  {
+    "id": "lpar_007",
+    "name": "VIOS-02",
+    "system_id": "sys_9117_mma_001",
+    "status": "Running",
+    "os": "VIOS 3.1.2",
+    "profile": "default",
+    "cpu": {
+      "desired": 2,
+      "min": 1,
+      "max": 4,
+      "current": 2
+    },
+    "memory": {
+      "desired": 16384,
+      "min": 8192,
+      "max": 32768,
+      "current": 16384
+    },
+    "ip_address": "10.10.1.111",
+    "uptime": "120 days, 05:10:15"
+  },
+  {
+    "id": "lpar_008",
+    "name": "AIX-BACKUP-01",
+    "system_id": "sys_9117_mma_001",
+    "status": "Shutdown",
+    "os": "AIX 7.2",
+    "profile": "default",
+    "cpu": {
+      "desired": 1,
+      "min": 1,
+      "max": 2,
+      "current": 0
+    },
+    "memory": {
+      "desired": 8192,
+      "min": 4096,
+      "max": 16384,
+      "current": 0
+    },
+    "ip_address": "10.10.1.120",
+    "uptime": "N/A"
+  },
+  {
+    "id": "lpar_009",
+    "name": "AIX-PROD-DB02",
+    "system_id": "sys_9080_mhe_002",
+    "status": "Running",
+    "os": "AIX 7.1",
+    "profile": "default",
+    "cpu": {
+      "desired": 4,
+      "min": 2,
+      "max": 8,
+      "current": 4
+    },
+    "memory": {
+      "desired": 32768,
+      "min": 16384,
+      "max": 65536,
+      "current": 32768
+    },
+    "ip_address": "10.10.2.101",
+    "uptime": "67 days, 14:28:19"
+  },
+  {
+    "id": "lpar_010",
+    "name": "AIX-PROD-APP02",
+    "system_id": "sys_9080_mhe_002",
+    "status": "Running",
+    "os": "AIX 7.2",
+    "profile": "default",
+    "cpu": {
+      "desired": 2,
+      "min": 1,
+      "max": 4,
+      "current": 2
+    },
+    "memory": {
+      "desired": 16384,
+      "min": 8192,
+      "max": 32768,
+      "current": 16384
+    },
+    "ip_address": "10.10.2.102",
+    "uptime": "54 days, 09:45:33"
+  },
+  {
+    "id": "lpar_011",
+    "name": "VIOS-03",
+    "system_id": "sys_9080_mhe_002",
+    "status": "Running",
+    "os": "VIOS 3.1.1",
+    "profile": "default",
+    "cpu": {
+      "desired": 2,
+      "min": 1,
+      "max": 4,
+      "current": 2
+    },
+    "memory": {
+      "desired": 16384,
+      "min": 8192,
+      "max": 32768,
+      "current": 16384
+    },
+    "ip_address": "10.10.2.110",
+    "uptime": "98 days, 22:11:05"
+  },
+  {
+    "id": "lpar_012",
+    "name": "VIOS-04",
+    "system_id": "sys_9080_mhe_002",
+    "status": "Running",
+    "os": "VIOS 3.1.1",
+    "profile": "default",
+    "cpu": {
+      "desired": 2,
+      "min": 1,
+      "max": 4,
+      "current": 2
+    },
+    "memory": {
+      "desired": 16384,
+      "min": 8192,
+      "max": 32768,
+      "current": 16384
+    },
+    "ip_address": "10.10.2.111",
+    "uptime": "98 days, 22:08:47"
+  },
+  {
+    "id": "lpar_013",
+    "name": "AIX-QA-APP01",
+    "system_id": "sys_9080_mhe_002",
+    "status": "Not Activated",
+    "os": "AIX 7.2",
+    "profile": "default",
+    "cpu": {
+      "desired": 2,
+      "min": 1,
+      "max": 4,
+      "current": 0
+    },
+    "memory": {
+      "desired": 8192,
+      "min": 4096,
+      "max": 16384,
+      "current": 0
+    },
+    "ip_address": "10.10.2.120",
+    "uptime": "N/A"
+  },
+  {
+    "id": "lpar_014",
+    "name": "AIX-PROD-SAP01",
+    "system_id": "sys_9009_42a_003",
+    "status": "Running",
+    "os": "AIX 7.3",
+    "profile": "default",
+    "cpu": {
+      "desired": 8,
+      "min": 4,
+      "max": 16,
+      "current": 8
+    },
+    "memory": {
+      "desired": 131072,
+      "min": 65536,
+      "max": 262144,
+      "current": 131072
+    },
+    "ip_address": "10.10.3.101",
+    "uptime": "156 days, 11:23:45"
+  },
+  {
+    "id": "lpar_015",
+    "name": "AIX-PROD-SAP02",
+    "system_id": "sys_9009_42a_003",
+    "status": "Running",
+    "os": "AIX 7.3",
+    "profile": "default",
+    "cpu": {
+      "desired": 8,
+      "min": 4,
+      "max": 16,
+      "current": 8
+    },
+    "memory": {
+      "desired": 131072,
+      "min": 65536,
+      "max": 262144,
+      "current": 131072
+    },
+    "ip_address": "10.10.3.102",
+    "uptime": "156 days, 11:20:12"
+  },
+  {
+    "id": "lpar_016",
+    "name": "LINUX-PROD-ORACLE01",
+    "system_id": "sys_9009_42a_003",
+    "status": "Running",
+    "os": "SLES 15 SP3",
+    "profile": "default",
+    "cpu": {
+      "desired": 6,
+      "min": 4,
+      "max": 12,
+      "current": 6
+    },
+    "memory": {
+      "desired": 98304,
+      "min": 49152,
+      "max": 196608,
+      "current": 98304
+    },
+    "ip_address": "10.10.3.103",
+    "uptime": "203 days, 07:55:28"
+  },
+  {
+    "id": "lpar_017",
+    "name": "AIX-DEV-SAP01",
+    "system_id": "sys_9009_42a_003",
+    "status": "Running",
+    "os": "AIX 7.3",
+    "profile": "default",
+    "cpu": {
+      "desired": 4,
+      "min": 2,
+      "max": 8,
+      "current": 4
+    },
+    "memory": {
+      "desired": 32768,
+      "min": 16384,
+      "max": 65536,
+      "current": 32768
+    },
+    "ip_address": "10.10.3.104",
+    "uptime": "28 days, 16:42:09"
+  },
+  {
+    "id": "lpar_018",
+    "name": "VIOS-05",
+    "system_id": "sys_9009_42a_003",
+    "status": "Running",
+    "os": "VIOS 3.1.3",
+    "profile": "default",
+    "cpu": {
+      "desired": 2,
+      "min": 1,
+      "max": 4,
+      "current": 2
+    },
+    "memory": {
+      "desired": 16384,
+      "min": 8192,
+      "max": 32768,
+      "current": 16384
+    },
+    "ip_address": "10.10.3.110",
+    "uptime": "180 days, 19:33:21"
+  },
+  {
+    "id": "lpar_019",
+    "name": "VIOS-06",
+    "system_id": "sys_9009_42a_003",
+    "status": "Running",
+    "os": "VIOS 3.1.3",
+    "profile": "default",
+    "cpu": {
+      "desired": 2,
+      "min": 1,
+      "max": 4,
+      "current": 2
+    },
+    "memory": {
+      "desired": 16384,
+      "min": 8192,
+      "max": 32768,
+      "current": 16384
+    },
+    "ip_address": "10.10.3.111",
+    "uptime": "180 days, 19:31:05"
+  }
+]

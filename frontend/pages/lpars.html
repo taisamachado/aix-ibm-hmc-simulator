@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LPARs - Hardware Management Console</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body class="dashboard-page">
+    <nav class="navbar">
+        <div class="navbar-content">
+            <div class="navbar-brand">
+                <svg width="40" height="16" viewBox="0 0 60 24" fill="none">
+                    <rect width="60" height="24" fill="#0F62FE"/>
+                    <text x="30" y="17" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="white" text-anchor="middle">IBM</text>
+                </svg>
+                <span>Hardware Management Console</span>
+            </div>
+            <ul class="navbar-menu">
+                <li><a href="dashboard.html">Dashboard</a></li>
+                <li><a href="systems.html">Systems</a></li>
+                <li><a href="lpars.html" class="active">LPARs</a></li>
+            </ul>
+            <div class="navbar-user">
+                <span class="user-info" id="userInfo">Loading...</span>
+                <button class="btn-logout" id="logoutBtn">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Logical Partitions (LPARs)</h1>
+            <p>Manage and monitor all logical partitions across your Power Systems</p>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <h2>All LPARs</h2>
+                <button class="btn btn-primary" onclick="showCreateLparModal()">Create New LPAR</button>
+            </div>
+            <div class="card-body">
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>LPAR Name</th>
+                                <th>System</th>
+                                <th>Operating System</th>
+                                <th>Status</th>
+                                <th>CPU (Current/Max)</th>
+                                <th>Memory (MB)</th>
+                                <th>IP Address</th>
+                                <th>Uptime</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lparsTableBody">
+                            <tr>
+                                <td colspan="9" class="loading">Loading LPARs...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Create LPAR Modal -->
+    <div id="createLparModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+        <div style="background: white; padding: 32px; border-radius: 8px; max-width: 600px; width: 90%; max-height: 90vh; overflow-y: auto;">
+            <h2 style="margin-bottom: 24px;">Create New LPAR</h2>
+            <form id="createLparForm">
+                <div class="form-group">
+                    <label for="lparName">LPAR Name *</label>
+                    <input type="text" id="lparName" required placeholder="e.g., AIX-PROD-APP03">
+                </div>
+                
+                <div class="form-group">
+                    <label for="systemId">Target System *</label>
+                    <select id="systemId" required style="width: 100%; padding: 12px; border: 1px solid var(--border-subtle); border-radius: 4px;">
+                        <option value="">Select a system...</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="osType">Operating System *</label>
+                    <select id="osType" required style="width: 100%; padding: 12px; border: 1px solid var(--border-subtle); border-radius: 4px;">
+                        <option value="AIX 7.3">AIX 7.3</option>
+                        <option value="AIX 7.2">AIX 7.2</option>
+                        <option value="AIX 7.1">AIX 7.1</option>
+                        <option value="RHEL 8.5">RHEL 8.5</option>
+                        <option value="SLES 15 SP3">SLES 15 SP3</option>
+                        <option value="VIOS 3.1.3">VIOS 3.1.3</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="viosId">Virtual I/O Server (VIOS) *</label>
+                    <select id="viosId" required style="width: 100%; padding: 12px; border: 1px solid var(--border-subtle); border-radius: 4px;">
+                        <option value="">Select a VIOS...</option>
+                    </select>
+                    <small style="display: block; margin-top: 8px; color: #525252; font-size: 12px;">
+                        ℹ️ The VIOS provides virtual storage and network adapters to this LPAR
+                    </small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cpuDesired">Desired CPU Cores *</label>
+                    <input type="number" id="cpuDesired" required min="1" max="16" value="2">
+                </div>
+                
+                <div class="form-group">
+                    <label for="cpuMin">Minimum CPU Cores *</label>
+                    <input type="number" id="cpuMin" required min="1" max="16" value="1">
+                </div>
+                
+                <div class="form-group">
+                    <label for="cpuMax">Maximum CPU Cores *</label>
+                    <input type="number" id="cpuMax" required min="1" max="32" value="4">
+                </div>
+                
+                <div class="form-group">
+                    <label for="memoryDesired">Desired Memory (MB) *</label>
+                    <input type="number" id="memoryDesired" required min="2048" max="262144" value="8192" step="1024">
+                </div>
+                
+                <div class="form-group">
+                    <label for="memoryMin">Minimum Memory (MB) *</label>
+                    <input type="number" id="memoryMin" required min="2048" max="262144" value="4096" step="1024">
+                </div>
+                
+                <div class="form-group">
+                    <label for="memoryMax">Maximum Memory (MB) *</label>
+                    <input type="number" id="memoryMax" required min="2048" max="524288" value="16384" step="1024">
+                </div>
+                
+                <div style="display: flex; gap: 12px; margin-top: 24px;">
+                    <button type="submit" class="btn btn-primary" style="flex: 1;">Create LPAR</button>
+                    <button type="button" class="btn btn-secondary" onclick="hideCreateLparModal()" style="flex: 1;">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/lpars.js"></script>
+</body>
+</html>
