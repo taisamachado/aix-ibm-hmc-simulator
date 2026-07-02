@@ -36,7 +36,7 @@ git commit -m "Initial commit: HMC Simulator with AIX installation console"
 
 ```bash
 # Adicione o repositório remoto
-git remote add origin https://github.com/SEU_USUARIO/hmc-simulator.git
+git remote add origin https://github.com/taisamachado/aix-ibm-hmc-simulator.git
 
 # Renomeie a branch para main (se necessário)
 git branch -M main
