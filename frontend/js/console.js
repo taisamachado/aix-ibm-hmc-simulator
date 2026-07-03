@@ -4,6 +4,63 @@ let currentScreen = 'boot';
 let installationProgress = 0;
 let lparData = null;
 
+// AIX System State (for update simulation)
+let aixSystemState = {
+    version: '7300-00-00-0000',
+    tl: '7300-00',
+    filesets: [
+        { name: 'bos.rte', version: '7.3.0.0', state: 'COMMITTED' },
+        { name: 'bos.net.tcp.client', version: '7.3.0.0', state: 'COMMITTED' },
+        { name: 'bos.perf.tools', version: '7.3.0.0', state: 'COMMITTED' },
+        { name: 'xlC.rte', version: '16.1.0.0', state: 'COMMITTED' }
+    ],
+    updatesDownloaded: false,
+    updateType: null, // 'TL', 'SP', or 'SECURITY'
+    updateVersion: null,
+    backupCreated: false,
+    needsReboot: false
+};
+
+// Available updates
+const availableUpdates = {
+    'TL': {
+        version: '7300-01-00-0000',
+        tl: '7300-01',
+        description: 'AIX 7.3 Technology Level 1',
+        size: '4.2 GB',
+        releaseDate: '2023-11-15',
+        filesets: [
+            { name: 'bos.rte', version: '7.3.1.0' },
+            { name: 'bos.net.tcp.client', version: '7.3.1.0' },
+            { name: 'bos.perf.tools', version: '7.3.1.0' },
+            { name: 'xlC.rte', version: '16.1.0.1' }
+        ]
+    },
+    'SP': {
+        version: '7300-01-02-2148',
+        tl: '7300-01',
+        description: 'AIX 7.3 TL1 Service Pack 2',
+        size: '1.8 GB',
+        releaseDate: '2024-03-20',
+        filesets: [
+            { name: 'bos.rte', version: '7.3.1.2' },
+            { name: 'bos.net.tcp.client', version: '7.3.1.2' },
+            { name: 'bos.perf.tools', version: '7.3.1.2' },
+            { name: 'xlC.rte', version: '16.1.0.2' }
+        ]
+    },
+    'SECURITY': {
+        version: '7300-00-01-2301',
+        tl: '7300-00',
+        description: 'Security Fix for CVE-2024-1234',
+        size: '245 MB',
+        releaseDate: '2024-06-15',
+        filesets: [
+            { name: 'bos.net.tcp.client', version: '7.3.0.1' }
+        ]
+    }
+};
+
 // Installation workflow
 const installationFlow = {
     boot: {
@@ -455,10 +512,11 @@ You are now logged in as root.
 
 Type 'help' for available commands, or try:
   - oslevel    : Check AIX version
-  - hostname   : Display system hostname
-  - ifconfig   : Network configuration
-  - lsdev      : List devices
-  - df -g      : Disk space usage
+  - vmstat 1 5 : CPU/memory stats
+  - errpt      : Error log
+  - lssrc -a   : Service status
+  - ps -ef     : Process list
+  - scenario   : Guided troubleshooting
 
 # `
 };
@@ -560,7 +618,13 @@ function startInstallation() {
     clearConsole();
     currentScreen = 'boot';
     currentStep = 1;
+    activeScenario = null;
+    scenarioStepIndex = 0;
+    updateSidebarForInstallMode();
     updateProgress(1);
+    
+    document.getElementById('lparInfo').textContent =
+        `LPAR ID: ${lparData?.id || 'N/A'} • Modo Instalação AIX 7.3`;
     
     printScreen('boot');
     
@@ -570,12 +634,39 @@ function startInstallation() {
     }, 1000);
 }
 
+function startPracticeShell() {
+    clearConsole();
+    currentScreen = 'aix_shell';
+    currentStep = 7;
+    initOperationalState(lparData?.name);
+    updateSidebarForPracticeMode();
+    updateProgress(7);
+    
+    document.getElementById('lparInfo').textContent =
+        `LPAR ID: ${lparData?.id || 'N/A'} • Modo Prática — Shell AIX 7.3`;
+    
+    printLine('', 'info');
+    printLine('Modo Prática — Shell AIX 7.3', 'success');
+    printLine('Digite "help" para ver todos os comandos.', 'info');
+    printLine('Digite "scenario" para cenários guiados de troubleshooting.', 'info');
+    printLine('', 'info');
+    
+    handleScreen('aix_shell');
+}
+
 function processInput() {
     const input = document.getElementById('consoleInput');
-    const value = input.value.trim().toLowerCase();
+    const rawValue = input.value;
+    const value = rawValue.trim().toLowerCase();
     
     hideInput();
-    printLine(`${document.getElementById('prompt').textContent}${input.value}`, 'prompt');
+    printLine(`${document.getElementById('prompt').textContent}${rawValue}`, 'prompt');
+    input.value = '';
+    
+    if (currentScreen === 'aix_shell') {
+        handleShellCommand(value);
+        return;
+    }
     
     const flow = installationFlow[currentScreen];
     
@@ -647,6 +738,10 @@ function handleScreen(screenName) {
             break;
             
         case 'aix_shell':
+            initOperationalState(lparData?.name);
+            updateSidebarForPracticeMode();
+            document.getElementById('lparInfo').textContent =
+                `LPAR ID: ${lparData?.id || 'N/A'} • Shell AIX 7.3 — digite "help"`;
             printScreen('aix_shell');
             updateHint(installationFlow.aix_shell.hint);
             showInput('# ');
@@ -698,8 +793,25 @@ function clearLastLines(count) {
 }
 
 function handleShellCommand(command) {
+    const parts = command.trim().split(/\s+/);
+    const cmd = parts[0];
+    const args = parts.slice(1).join(' ');
+    
+    if (handleOperationalCommand(cmd, args, command)) {
+        setTimeout(() => showInput('# '), 100);
+        return;
+    }
+    
     const commands = {
-        'oslevel': () => printLine('7300-00-00-0000', 'info'),
+        'oslevel': () => {
+            if (args === '-s') {
+                printLine(aixSystemState.version, 'info');
+            } else if (args === '-r') {
+                printLine(aixSystemState.tl, 'info');
+            } else {
+                printLine(aixSystemState.version, 'info');
+            }
+        },
         'hostname': () => printLine(lparData?.name || 'AIX-LPAR', 'info'),
         'ifconfig': () => {
             printLine('lo0: flags=8000<LOOPBACK>', 'info');
@@ -716,18 +828,108 @@ function handleShellCommand(command) {
             printLine('Filesystem    GB blocks      Free %Used    Iused %Iused Mounted on', 'info');
             printLine('/dev/hd4           4.00      3.50   13%      156     1% /', 'info');
             printLine('/dev/hd2           8.00      5.20   35%     2341     3% /usr', 'info');
-            printLine('/dev/hd9var        4.00      3.80    5%       89     1% /var', 'info');
+            printLine('/dev/hd9var        4.00      0.32   92%       89     1% /var', 'warning');
             printLine('/dev/hd3           4.00      3.95    2%       12     1% /tmp', 'info');
+            checkScenarioProgress('df', args);
+        },
+        'lslpp': () => {
+            if (args === '-L' || args === '-l') {
+                printLine('  Fileset                      Level  State      Description', 'info');
+                printLine('  ----------------------------------------------------------------------------', 'info');
+                printLine('Path: /usr/lib/objrepos', 'info');
+                aixSystemState.filesets.forEach(fs => {
+                    const padding = ' '.repeat(Math.max(1, 30 - fs.name.length));
+                    const versionPad = ' '.repeat(Math.max(1, 10 - fs.version.length));
+                    printLine(`  ${fs.name}${padding}${fs.version}${versionPad}${fs.state}  ${fs.name === 'bos.rte' ? 'Base Operating System Runtime' : fs.name === 'bos.net.tcp.client' ? 'TCP/IP Client Support' : fs.name === 'bos.perf.tools' ? 'Performance Tools' : 'XL C/C++ Runtime'}`, 'info');
+                });
+            } else {
+                printLine('Usage: lslpp -L (list all filesets)', 'info');
+            }
+        },
+        'lppchk': () => {
+            if (args === '-v') {
+                printLine('Checking installed filesets...', 'info');
+                setTimeout(() => {
+                    printLine('All filesets are consistent.', 'success');
+                    showInput('# ');
+                }, 1500);
+                return;
+            }
+            printLine('Usage: lppchk -v (verify filesets consistency)', 'info');
+        },
+        'instfix': () => {
+            if (args === '-i') {
+                printLine(`All filesets for ${aixSystemState.tl}_AIX_ML were found.`, 'info');
+                printLine(`All filesets for ${aixSystemState.version} were found.`, 'info');
+            } else {
+                printLine('Usage: instfix -i (check installed fixes)', 'info');
+            }
+        },
+        'suma': () => cmdSuma(args),
+        'installp': () => cmdInstallp(args),
+        'mksysb': () => cmdMksysb(args),
+        'shutdown': () => cmdShutdown(args),
+        'smitty': () => {
+            printLine('Starting SMIT (System Management Interface Tool)...', 'info');
+            printLine('', 'info');
+            printLine('[Simulated] In real AIX, this would open the SMIT menu interface', 'info');
+            printLine('', 'info');
+            printLine('Common SMIT shortcuts:', 'info');
+            printLine('  smitty install      - Install software', 'info');
+            printLine('  smitty update_all   - Update all software', 'info');
+            printLine('  smitty devices      - Device management', 'info');
+            printLine('  smitty tcpip        - TCP/IP configuration', 'info');
         },
         'help': () => {
-            printLine('Available commands:', 'info');
-            printLine('  oslevel  - Display AIX version', 'info');
-            printLine('  hostname - Display system hostname', 'info');
-            printLine('  ifconfig - Display network configuration', 'info');
-            printLine('  lsdev    - List devices', 'info');
-            printLine('  df       - Display disk space', 'info');
-            printLine('  clear    - Clear screen', 'info');
-            printLine('  exit     - Exit console', 'info');
+            printLine('═══════════════════════════════════════════════════════', 'info');
+            printLine('  AIX COMMAND REFERENCE', 'success');
+            printLine('═══════════════════════════════════════════════════════', 'info');
+            printLine('', 'info');
+            printLine('📊 System Information:', 'info');
+            printLine('  oslevel      - Display AIX version', 'info');
+            printLine('  oslevel -s   - Display detailed version', 'info');
+            printLine('  oslevel -r   - Display Technology Level', 'info');
+            printLine('  hostname     - Display system hostname', 'info');
+            printLine('  lsdev        - List devices', 'info');
+            printLine('', 'info');
+            printLine('🌐 Network:', 'info');
+            printLine('  ifconfig     - Display network configuration', 'info');
+            printLine('', 'info');
+            printLine('💾 Disk & Filesystem:', 'info');
+            printLine('  df           - Display disk space', 'info');
+            printLine('  df -g        - Display disk space in GB', 'info');
+            printLine('', 'info');
+            printLine('🔄 Software Management & Updates:', 'info');
+            printLine('  lslpp -L     - List installed filesets', 'info');
+            printLine('  lppchk -v    - Verify filesets consistency', 'info');
+            printLine('  instfix -i   - Check installed fixes', 'info');
+            printLine('', 'info');
+            printLine('  📥 Download Updates:', 'info');
+            printLine('    suma -x -a Action=Preview -a RqType=TL       # Preview TL', 'info');
+            printLine('    suma -x -a Action=Preview -a RqType=SP       # Preview SP', 'info');
+            printLine('    suma -x -a Action=Preview -a RqType=Security # Preview Security', 'info');
+            printLine('    suma -x -a Action=Download -a RqType=TL      # Download TL', 'info');
+            printLine('', 'info');
+            printLine('  💿 Install Updates:', 'info');
+            printLine('    mksysb -i /backup/backup.img    # Create backup FIRST!', 'info');
+            printLine('    installp -apXd /updates all     # Preview installation', 'info');
+            printLine('    installp -acgXd /updates all    # Install updates', 'info');
+            printLine('    shutdown -Fr now                # Reboot to apply', 'info');
+            printLine('    installp -c all                 # Commit updates', 'info');
+            printLine('', 'info');
+            printLine('  smitty       - System Management Interface', 'info');
+            printLine('', 'info');
+            printLine('🖥️  Console:', 'info');
+            printLine('  clear        - Clear screen', 'info');
+            printLine('  exit         - Exit console', 'info');
+            printLine('', 'info');
+            printLine('💡 TIP: Try the full update workflow!', 'success');
+            printLine('   1. suma -x -a Action=Preview -a RqType=TL', 'info');
+            printLine('   2. suma -x -a Action=Download -a RqType=TL', 'info');
+            printLine('   3. mksysb -i /backup/backup.img', 'info');
+            printLine('   4. installp -acgXd /updates all', 'info');
+            printLine('   5. shutdown -Fr now', 'info');
+            getOperationalHelpLines().forEach(line => printLine(line, 'info'));
         },
         'clear': () => clearConsole(),
         'exit': () => {
@@ -736,10 +938,11 @@ function handleShellCommand(command) {
         }
     };
     
-    if (commands[command]) {
-        commands[command]();
+    if (commands[cmd]) {
+        commands[cmd]();
     } else if (command) {
-        printLine(`${command}: command not found`, 'error');
+        printLine(`${cmd}: command not found`, 'error');
+        printLine('Type "help" for available commands.', 'info');
     }
     
     setTimeout(() => showInput('# '), 100);
@@ -747,23 +950,32 @@ function handleShellCommand(command) {
 
 // UI Controls
 function restartInstallation() {
+    if (currentScreen === 'aix_shell') {
+        if (confirm('Reiniciar o shell de prática?')) {
+            startPracticeShell();
+        }
+        return;
+    }
     if (confirm('Are you sure you want to restart the installation? All progress will be lost.')) {
         startInstallation();
     }
 }
 
 function showHelp() {
-    alert(`AIX Installation Simulator Help
+    alert(`AIX Simulator — Ajuda
 
-This simulator guides you through a realistic AIX 7.3 installation process.
+MODOS:
+  Modo Prática  — Shell AIX com comandos (padrão ao abrir)
+  Instalação    — Simula instalação completa do AIX 7.3
 
-Tips:
-- Follow the hints on the right sidebar
-- Read each screen carefully
-- Type the number or text shown in the prompts
-- The installation progress is accelerated for training purposes
+COMANDOS ESSENCIAIS:
+  errpt, vmstat 1 5, svmon -G, lssrc -a, ps -ef
+  netstat -an, df -g, who, crontab -l
 
-For detailed instructions, see the TRAINING-GUIDE.md file.`);
+CENÁRIOS GUIADOS (sidebar ou "scenario slow_server"):
+  Servidor lento, Serviço parado, Disco cheio
+
+Digite "help" no shell para referência completa.`);
 }
 
 function closeConsole() {
@@ -792,8 +1004,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // Start installation
-    setTimeout(() => startInstallation(), 500);
+    const mode = params.get('mode') || 'practice';
+    if (mode === 'install') {
+        setTimeout(() => startInstallation(), 500);
+    } else {
+        setTimeout(() => startPracticeShell(), 500);
+    }
 });
 
 // Made with Bob

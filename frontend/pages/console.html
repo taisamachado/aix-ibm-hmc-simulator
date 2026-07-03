@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LPAR Console - AIX Installation Simulator</title>
+    <title>LPAR Console - AIX Simulator</title>
     <link rel="stylesheet" href="../css/styles.css">
     <link rel="stylesheet" href="../css/console.css">
 </head>
@@ -18,7 +18,9 @@
                 </div>
             </div>
             <div class="console-actions">
-                <button class="btn-console" onclick="restartInstallation()">🔄 Restart</button>
+                <button class="btn-console btn-practice" onclick="startPracticeShell()">💻 Modo Prática</button>
+                <button class="btn-console" onclick="startInstallation()">📀 Instalação</button>
+                <button class="btn-console" onclick="restartInstallation()">🔄 Reiniciar</button>
                 <button class="btn-console" onclick="showHelp()">❓ Help</button>
                 <button class="btn-console btn-close" onclick="closeConsole()">✖ Close</button>
             </div>
@@ -69,12 +71,19 @@
                 </div>
 
                 <div class="hints-panel">
-                    <h3>💡 Current Hint</h3>
-                    <p id="currentHint">Starting installation...</p>
+                    <h3>💡 Dica Atual</h3>
+                    <p id="currentHint">Iniciando...</p>
+                </div>
+
+                <div class="scenario-panel">
+                    <h3>🎯 Cenários de Prática</h3>
+                    <div id="scenarioPanel">
+                        <p class="scenario-idle">Carregando...</p>
+                    </div>
                 </div>
 
                 <div class="commands-panel">
-                    <h3>📝 Quick Reference</h3>
+                    <h3>📝 Referência Rápida</h3>
                     <div id="quickCommands">
                         <p><strong>SMS Menu:</strong> Press 1-5</p>
                         <p><strong>Installation:</strong> Follow prompts</p>
@@ -86,6 +95,8 @@
     </div>
 
     <script src="../js/auth.js"></script>
+    <script src="../js/aix-update-simulator.js"></script>
+    <script src="../js/aix-commands-simulator.js"></script>
     <script src="../js/console.js"></script>
 </body>
 </html>
